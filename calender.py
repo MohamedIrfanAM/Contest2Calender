@@ -6,6 +6,7 @@ def add_event(name,start,end,url):
   event = {
     'summary': name,
     'description': url,
+    'colorId':"11",
     'start': {
       'dateTime': start,
       'timeZone': 'Asia/Kolkata',
@@ -27,3 +28,9 @@ def add_event(name,start,end,url):
     },
   }
   event = service.events().insert(calendarId='primary', body=event).execute()
+
+def list_event_urls(start,end):
+  response = service.events().list(calendarId='primary',timeMin=start,timeMax=end,showDeleted=False).execute() 
+  if "items" in response:
+    urls = [item["description"] for item in response["items"]]
+    return urls
